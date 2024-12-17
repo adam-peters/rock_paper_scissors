@@ -10,25 +10,20 @@ let computerScore = 0;
 let humanSelection;
 let computerSelection;
 
-// Get Input
-// Validate Choice
-function getHumanChoice() {
+// Container for User Selected Buttons for Rock, Paper or Scissors
+const userInput = document.querySelector("#input");
 
-    let validInput = false;
-    let userInput;
+// Container for Displaying Game Results
+const results = document.querySelector("#results");
+const resultsText = document.createElement("p");
+const scores = document.querySelector("#scores");
+const scoresText = document.createElement("p");
 
-    while(!validInput) {
-        userInput = prompt("Enter your Choice: ").toLowerCase();
-
-        if(userInput === "scissors" || userInput === "rock" || userInput === "paper") {
-            validInput = true;
-        } else {
-            prompt("Invalid Input!, Your choice need to be Rock, Paper, or Scissors");
-        }
-    }
-
-    return userInput;
-}
+userInput.addEventListener("click", function(e){
+    humanSelection = e.target.id;
+    resultsText.textContent = "";
+    playGame();
+});
 
 // Generate Computer Response
 // Needs Random Number between One and Three
@@ -57,14 +52,11 @@ function getComputerChoice() {
 function processRound(winner) {
     if(winner) {
         humanScore++;
-        console.log("You win!");
-        console.log(humanSelection + " beats " + computerSelection);
+        resultsText.textContent += " You win! " + humanSelection + " beats " + computerSelection + ".";
     } else {
         computerScore++;
-        console.log("You lose!");
-        console.log(humanSelection + " is beat by " + computerSelection);
-    }
-    
+        resultsText.textContent += " You lose! " + humanSelection + " is beat by " + computerSelection + ".";
+    }  
 }
 
 // Compare Results
@@ -78,7 +70,7 @@ function playRound(humanChoice, computerChoice) {
 
     // Check Tie First
     if(humanChoice === computerChoice) {
-        console.log("You Tied");
+        resultsText.textContent += " You tied";
     } else {
 
         // Check Who Wins 
@@ -97,26 +89,20 @@ function playRound(humanChoice, computerChoice) {
 }
 
 function playGame() {
-    for(let i = 0; i < 5; i++) {
-        humanSelection = getHumanChoice();
-        computerSelection = getComputerChoice();
+    computerSelection = getComputerChoice();
 
-        console.log("You chose " + humanSelection);
-        console.log("The Computer chose " + computerSelection);
+    resultsText.textContent = "You chose " + humanSelection + ". The Computer chose " + computerSelection + ".";
+    results.appendChild(resultsText);
 
-        playRound(humanSelection, computerSelection);
+    playRound(humanSelection, computerSelection);
 
-        console.log("Your Score: " + humanScore);
-        console.log("Computer's Score: " + computerScore);
-    }
+    scoresText.textContent = "Your Score: " + humanScore + " \t Computer's Score: " + computerScore;
 
-    if(humanScore > computerScore) {
-        console.log("AI Uprising??? Not with you on team human");
-    } else {
-        console.log("Uh oh, the AI is coming for you!")
-    }
+    scores.appendChild(scoresText);
 }
 
-playGame();
+
+
+
 
 
